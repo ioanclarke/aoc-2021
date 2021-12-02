@@ -1,18 +1,3 @@
-def main():
-    instructions = open('in.txt').read().splitlines()
-    horizontal = 0
-    depth = 0
-    for inst in instructions:
-        direction, quantity = inst.split()
-        quantity = int(quantity)
-
-        if direction == "forward":
-            horizontal += quantity
-        elif direction == "down" :
-            depth += quantity
-        elif direction == "up":
-            depth -= quantity
-        
-    print(horizontal * depth)
-
-main()
+instructions = [line.split() for line in open('in.txt').read().splitlines()]
+distance_travelled = lambda direction: sum(int(x[1]) for x in instructions if x[0] == direction)
+print(distance_travelled('forward') * (distance_travelled('down') - distance_travelled('up')))
