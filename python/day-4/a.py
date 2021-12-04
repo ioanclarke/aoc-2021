@@ -5,71 +5,54 @@ def main():
     nums = [int(n) for n in nums.split(',')]
     boards = generate_boards(boards)
 
-    score = simulate_game(nums, boards)
+    winning_board, last_number_called = find_winning_board_and_last_number(nums, boards)
+    score = get_sum_of_unmarked_numbers(winning_board) * last_number_called
     print(f'final score: {score}')
 
 
-def generate_boards(boards):
-    boards = boards.split('\n\n')
+def generate_boards(boards_str):
+    boards = boards_str.split('\n\n')
     for i in range(len(boards)):
-        b = boards[i].splitlines()
-        b = [x.split() for x in b]
-        b = [[[int(x), 0] for x in row] for row in b]
-        boards[i] = b
+        board = boards[i].splitlines()
+        board_as_grid = [x.split() for x in board]
+        board_as_grid_with_marked_indicator = [[[int(x), 0] for x in row] for row in board_as_grid]
+        boards[i] = board_as_grid_with_marked_indicator
     
     return boards
 
 
-def simulate_game(nums, boards):
+def find_winning_board_and_last_number(nums, boards):
     for n in nums:
-        print(f'{n=}')
         for board in boards:
             for row in board:
                 for cell in row:
                     if cell[0] == n:
                         cell[1] = 1
                         if has_won(board):
-                            s = get_sum_of_unmarked_numbers(board)
-                            return s * n
+                            return board, n
 
-                            
+
 def has_won(board):
-    for row in board:
-        if all(cell[1] == 1 for cell in row):
-            print('full row')
-            print_board(board)
-            return True
+    def has_complete_row(board):
+        for row in board:
+            if all(cell[1] == 1 for cell in row):
+                return True
+                
+        return False
 
-    for i in range(len(board[0])):
-        column = [x[i] for x in board]
-        if all(cell[1] == 1 for cell in column):
-            print('full column')
-            print_board(board)
-            return True
+    def has_complete_column(board):
+        for i in range(len(board[0])):
+            column = [x[i] for x in board]
+            if all(cell[1] == 1 for cell in column):
+                return True
 
-    return False
+        return False
+
+    return has_complete_row(board) or has_complete_column(board)                            
 
 
 def get_sum_of_unmarked_numbers(board):
-    res = 0
-    for row in board:
-        for cell in row:
-            if cell[1] == 0:
-                res += cell[0]
-
-    return res
-
-
-def print_board(board):
-    for row in board:
-        print(row)
-
-
-def print_boards(boards):
-    for b in boards:
-        for row in b:
-            print(row)
-        print()
+    return sum(cell[0] for row in board for cell in row if cell[1] == 0)
 
 
 main()
