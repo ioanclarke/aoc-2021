@@ -16,6 +16,27 @@ def create_lines(inp):
     return lines
     
 
+def create_vent_map(lines):
+    max_y = get_max_y(lines)
+    max_x = get_max_x(lines)
+
+    vent_map = [[0 for _ in range(max_x + 1)] for _ in range(max_y + 1)]
+
+    for line in lines:
+        if horizontal(line):
+            draw_horizontal_line(line, vent_map)
+        elif vertical(line):
+            draw_vertical_line(line, vent_map)
+        else:
+            draw_diagonal_line(line, vent_map)
+            
+    return vent_map
+
+
+def count_overlapping_lines(vent_map):
+    return sum(cell > 1 for row in vent_map for cell in row)
+
+
 def get_max_x(lines):
     return max(max(line[0][0], line[1][0]) for line in lines)
 
@@ -63,27 +84,6 @@ def draw_diagonal_line(line, vent_map):
 
     for x, y in zip(range(x1, x2, x_step), range(y1, y2, y_step)):
         vent_map[y][x] += 1
-
-
-def create_vent_map(lines):
-    max_y = get_max_y(lines)
-    max_x = get_max_x(lines)
-
-    vent_map = [[0 for _ in range(max_x + 1)] for _ in range(max_y + 1)]
-
-    for line in lines:
-        if horizontal(line):
-            draw_horizontal_line(line, vent_map)
-        elif vertical(line):
-            draw_vertical_line(line, vent_map)
-        else:
-            draw_diagonal_line(line, vent_map)
-            
-    return vent_map
-
-
-def count_overlapping_lines(vent_map):
-    return sum(cell > 1 for row in vent_map for cell in row)
 
 
 main()
