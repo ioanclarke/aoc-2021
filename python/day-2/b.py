@@ -1,5 +1,5 @@
 def main():
-    instructions = open('in.txt').read().splitlines()
+    instructions = open('in.txt')
     horizontal = 0
     depth = 0
     aim = 0

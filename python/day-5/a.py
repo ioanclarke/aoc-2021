@@ -1,5 +1,5 @@
 def main():
-    inp = open('in').read().splitlines()
+    inp = open('in')
     lines = create_lines(inp)
     vent_map = create_vent_map(lines)
     num_of_dangerous_areas = count_overlapping_lines(vent_map)

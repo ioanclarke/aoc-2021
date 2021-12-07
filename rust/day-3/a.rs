@@ -19,8 +19,6 @@ fn main() -> Result<(), Box<dyn Error>> {
             .map(|b| b.chars().nth(i).unwrap())
             .collect();        
             
-        let frequency = |a: &char| bits.iter().filter(|&x| x == a).count();
-
         most_common_bits.push(max_by_key('1', '0', frequency));
     }
 

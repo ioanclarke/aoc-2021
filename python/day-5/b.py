@@ -1,9 +1,10 @@
 def main():
-    inp = open('in').read().splitlines()
+    inp = open('in')
     lines = create_lines(inp)
     vent_map = create_vent_map(lines)
     num_of_dangerous_areas = count_overlapping_lines(vent_map)
     print(num_of_dangerous_areas)
+
 
 def create_lines(inp):
     lines = []
@@ -80,7 +81,6 @@ def draw_diagonal_line(line, vent_map):
 
     y_step = 1 if y1 < y2 else -1
     y2 = y2 + 1 if y1 < y2  else y2 - 1
-
 
     for x, y in zip(range(x1, x2, x_step), range(y1, y2, y_step)):
         vent_map[y][x] += 1
