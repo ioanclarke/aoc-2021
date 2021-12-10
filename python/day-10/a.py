@@ -1,20 +1,18 @@
+from typing import List
+
+
 def main():
-    lines = open('in').read().split()
-    illegal_characters = get_illegal_characters(lines)
-    score = get_score(illegal_characters)
+    lines: List[str] = open('in').read().split()
+    illegal_chars: List[str] = get_illegal_chars(lines)
+    score: int = get_score(illegal_chars)
     print(score)    
 
-def get_illegal_characters(lines):
-    illegal_characters = []
-    for line in lines:
-        if (illegal_character := find_illegal_character(line)) is not None:
-            illegal_characters.append(illegal_character)
 
-    return illegal_characters
+def get_illegal_chars(lines: List[str]):
+    return [illegal_char for line in lines if (illegal_char := find_illegal_char(line)) is not None]
 
 
-
-def find_illegal_character(line):
+def find_illegal_char(line: str):
     open_chunk_chars = ['(', '[', '{', '<']
     close_chunk_pairs = {
         ')': '(',
@@ -33,7 +31,7 @@ def find_illegal_character(line):
     return None
 
 
-def get_score(chars):
+def get_score(chars: List[str]):
     char_scores = {
         ')': 3,
         ']': 57,

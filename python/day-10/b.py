@@ -1,10 +1,10 @@
 from typing import List
 
+
 def main():
     lines = open('in').read().split()
     incomplete_lines = [line for line in lines if not is_corrupt(line)]
-    # print('\n'.join(incomplete_lines))
-    closing_sequences = find_closing_sequences(incomplete_lines)
+    closing_sequences = [find_closing_sequence(line) for line in lines]
     score = get_score(closing_sequences)
     print(score)
 
@@ -28,13 +28,6 @@ def is_corrupt(line: str) -> bool:
     return False
 
 
-def find_closing_sequences(lines: List[str]) -> List[str]:
-    sequences = []
-    for line in lines:
-        sequences.append(find_closing_sequence(line))
-    return sequences
-
-
 def find_closing_sequence(line: str) -> str:
     open_chunk_chars = ['(', '[', '{', '<']
     open_chunk_pairs = {
@@ -44,7 +37,6 @@ def find_closing_sequence(line: str) -> str:
         '<': '>'
     }
 
-
     stack = []
     for c in line:
         if c in open_chunk_chars:
@@ -52,17 +44,11 @@ def find_closing_sequence(line: str) -> str:
         else:
             stack.pop()
             
-    closing_sequence = ''.join(reversed([open_chunk_pairs[c] for c in stack]))
-    # print(f'{line}  -   {closing_sequence}')
-    return closing_sequence
+    return ''.join(reversed([open_chunk_pairs[c] for c in stack]))
 
 
 def get_score(sequences: List[str]) -> int:
-    scores = []
-    for seq in sequences:
-        scores.append(get_score_for_sequence(seq))
-
-    scores.sort()
+    scores = sorted([get_score_for_sequence(seq) for seq in sequences])
     return scores[(len(scores) - 1) // 2]
 
 
@@ -74,6 +60,7 @@ def get_score_for_sequence(seq: str) -> int:
         '>': 4
     }
     score: int = 0
+    
     for c in seq:
         score *= 5
         score += char_scores[c]
