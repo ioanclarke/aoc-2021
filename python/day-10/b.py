@@ -4,7 +4,7 @@ from typing import List
 def main():
     lines = open('in').read().split()
     incomplete_lines = [line for line in lines if not is_corrupt(line)]
-    closing_sequences = [find_closing_sequence(line) for line in lines]
+    closing_sequences = [find_closing_sequence(line) for line in incomplete_lines]
     score = get_score(closing_sequences)
     print(score)
 
@@ -18,7 +18,7 @@ def is_corrupt(line: str) -> bool:
         '>': '<'
     }
 
-    stack = []
+    stack: List[str] = []
     for c in line:
         if c in open_chunk_chars:
             stack.append(c)
@@ -30,14 +30,14 @@ def is_corrupt(line: str) -> bool:
 
 def find_closing_sequence(line: str) -> str:
     open_chunk_chars = ['(', '[', '{', '<']
-    open_chunk_pairs = {
+    open_chunk_pairs: dict[str, str] = {
         '(': ')',
         '[': ']',
         '{': '}',
         '<': '>'
     }
 
-    stack = []
+    stack: List[str] = []
     for c in line:
         if c in open_chunk_chars:
             stack.append(c)
@@ -60,7 +60,7 @@ def get_score_for_sequence(seq: str) -> int:
         '>': 4
     }
     score: int = 0
-    
+
     for c in seq:
         score *= 5
         score += char_scores[c]

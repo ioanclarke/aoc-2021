@@ -21,7 +21,7 @@ def find_illegal_char(line: str):
         '>': '<'
     }
 
-    stack = []
+    stack: List[str] = []
     for c in line:
         if c in open_chunk_chars:
             stack.append(c)
